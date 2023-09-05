@@ -1,5 +1,5 @@
 return {
-  colorscheme = 'dawnfox',
+  colorscheme = 'newpaper',
 
   -- diagnostics = {
   --   virtual_text = false,
@@ -38,11 +38,11 @@ return {
     }
 
     vim.keymap.set("i", "<M-S>", function() return vim.fn["codeium#Complete"]() end, { expr = true })
-    vim.cmd "nnoremap <C-m> <C-v>"
+    vim.keymap.set("n", "<C-m>", "<C-v>")
 
     if vim.fn.executable "rg" == 1 then
-      vim.cmd "set grepprg=rg\\ --vimgrep\\ --smart-case\\ --hidden"
-      vim.cmd "set grepformat=%f:%l:%c:%m"
+      vim.opt.grepprg = "rg --vimgrep --smart-case --hidden"
+      vim.opt.grepformat = "%f:%l:%c:%m"
     end
   end,
 }
