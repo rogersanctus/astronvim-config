@@ -9,12 +9,13 @@ local inlayHints = {
 }
 
 return {
-  settings = {
+  settings = inlayHints
+    --[[{
     javascript = {
       inlayHints = inlayHints
     },
     typescript = {
       inlayHints = inlayHints
     },
-  },
+  },]]
 }
