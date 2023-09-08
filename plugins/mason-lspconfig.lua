@@ -2,7 +2,11 @@
 return {
   "williamboman/mason-lspconfig.nvim",
   opts = {
-    automatic_installation = true,
+    automatic_installation = {
+      exclude = {
+        "unocss"
+      }
+    },
     ensure_installed = {
       "clangd",
       "cssls",
@@ -14,7 +18,8 @@ return {
       "lua_ls",
       "tsserver",
       "yamlls",
-      "elixirls"
+      "elixirls",
+      "unocss",
     },
   },
 }
