@@ -4,12 +4,13 @@ return {
   opts = {
     automatic_installation = {
       exclude = {
-        "unocss"
-      }
+        "unocss",
+      },
     },
     ensure_installed = {
       "clangd",
       "cssls",
+      "eslint",
       "html",
       "marksman",
       "jsonls",
