@@ -11,7 +11,7 @@ return {
     listchars = { tab = "→ ", extends = "⟩", precedes = "⟨", trail = "·", nbsp = "␣", eol = "↲" },
     swapfile = false,
     termguicolors = true,
-    guicursor = "n-v-c:block-Cursor,i-ci-ve:ver25-iCursor-blinkwait500-blinkoff400-blinkon200,r-cr:hor20-Cursor,o:hor50",
+    guicursor = "n-v-c:block,i-ci-ve:ver25-blinkwait500-blinkoff400-blinkon200,r-cr:hor20,o:hor50,a:Cursor/lCursor",
   },
   g = {
     autoformat_enabled = true, -- enable or disable auto formatting at start (lsp.formatting.format_on_save must be enabled)
