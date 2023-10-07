@@ -6,4 +6,8 @@ return function(client, bufnr)
       vim.keymap.set("n", "<leader>uH", function() inlayhints.toggle() end, { desc = "Toggle inlay hints" })
     end
   end
+
+  if client.server_capabilities.definitionProvider then
+    vim.keymap.set("n", "gD", function() vim.lsp.buf.definition() end, { desc = "Go to definition" })
+  end
 end
