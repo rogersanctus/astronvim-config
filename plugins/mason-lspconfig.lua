@@ -21,6 +21,8 @@ return {
       "yamlls",
       "elixirls",
       "unocss",
+      "kotlin_language_server",
+      "tailwindcss",
     },
   },
 }
