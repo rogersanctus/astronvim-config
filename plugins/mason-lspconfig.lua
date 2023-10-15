@@ -23,6 +23,7 @@ return {
       "unocss",
       "kotlin_language_server",
       "tailwindcss",
+      "emmet_language_server",
     },
   },
 }
