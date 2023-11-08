@@ -1,10 +1,5 @@
 return {
-  colorscheme = 'newpaper',
-
-  -- diagnostics = {
-  --   virtual_text = false,
-  --   underline = true,
-  -- },
+  colorscheme = "nightfox",
 
   polish = function()
     require "user.autocmds"
