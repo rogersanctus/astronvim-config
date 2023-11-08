@@ -60,3 +60,21 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     end
   end,
 })
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = "filetypedetect",
+  pattern = "Jenkinsfile",
+  callback = function()
+    vim.bo.filetype = "groovy"
+  end,
+})
+
+vim.api.nvim_create_augroup("jenkinslinter", { clear = true })
+
+vim.api.nvim_create_autocmd({ "BufWrite" }, {
+  group = "jenkinslinter",
+  pattern = "Jenkinsfile",
+  callback = function()
+    require("jenkinsfile_linter").validate()
+  end,
+})
