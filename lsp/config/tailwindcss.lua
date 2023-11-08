@@ -12,7 +12,7 @@ return {
     ".git",
     "mix.exs"
   ),
-  filetypes = { "html", "javascriptreact", "typescriptreact", "eelixir", "heex" },
+  filetypes = { "html", "javascriptreact", "typescriptreact", "eelixir", "heex", "astro" },
   init_options = {
     userLanguages = {
       heex = "html-eex",

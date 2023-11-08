@@ -3,6 +3,7 @@ return {
     enabled = true,
 
     ignore_filetypes = {
+      "astro",
       "javascript",
       "javascriptreact",
       "typescript",
