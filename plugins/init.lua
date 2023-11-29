@@ -6,11 +6,17 @@ return {
   {
     "ray-x/lsp_signature.nvim",
     event = "InsertEnter",
-    config = function()
-      require("lsp_signature").setup({})
-    end,
+    config = function() require("lsp_signature").setup {} end,
   },
   {
-    "goolord/alpha-nvim"
-  }
+    "goolord/alpha-nvim",
+  },
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    enabled = false,
+  },
+  {
+    "jay-babu/mason-null-ls.nvim",
+    enabled = false,
+  },
 }
