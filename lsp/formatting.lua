@@ -15,5 +15,6 @@ return {
     if client.name == "html" then return vim.bo.filetype ~= "heex" end
     -- And enables elixir formatter
     if client.name == "elixirls" then return true end
+    if client.name == "lua_ls" then return true end
   end,
 }
