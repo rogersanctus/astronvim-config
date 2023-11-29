@@ -17,7 +17,6 @@ return {
       "pyright",
       "sqlls",
       "lua_ls",
-      "tsserver",
       "yamlls",
       "elixirls",
       "unocss",
