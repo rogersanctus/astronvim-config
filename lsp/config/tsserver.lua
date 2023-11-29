@@ -9,8 +9,8 @@ local inlayHints = {
 }
 
 return {
-  settings = inlayHints
-    --[[{
+  settings = inlayHints,
+  --[[{
     javascript = {
       inlayHints = inlayHints
     },
