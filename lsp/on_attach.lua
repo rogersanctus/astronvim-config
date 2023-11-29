@@ -7,6 +7,10 @@ return function(client, bufnr)
     end
   end
 
+  -- if client.server_capabilities.declarationProvider then
+  --   vim.keymap.set("n", "gd", function() vim.lsp.buf.declaration() end, { desc = "Go to declaration" })
+  -- end
+
   if client.server_capabilities.definitionProvider then
     vim.keymap.set("n", "gD", function() vim.lsp.buf.definition() end, { desc = "Go to definition" })
   end
