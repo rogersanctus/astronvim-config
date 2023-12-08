@@ -4,18 +4,21 @@ return {
   polish = function()
     require "user.autocmds"
 
-    vim.g.clipboard = {
-      name = "WslClipboard",
-      copy = {
-        ["+"] = "clip.exe",
-        ["*"] = "clip.exe",
-      },
-      paste = {
-        ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-        ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-      },
-      cache_enabled = 0,
-    }
+    -- change clipboard only if operational system is Windows
+    if jit.os == "Windows" then
+      vim.g.clipboard = {
+        name = "WslClipboard",
+        copy = {
+          ["+"] = "clip.exe",
+          ["*"] = "clip.exe",
+        },
+        paste = {
+          ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+          ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        },
+        cache_enabled = 0,
+      }
+    end
 
     if jit.os == "Windows" then
       vim.cmd [[

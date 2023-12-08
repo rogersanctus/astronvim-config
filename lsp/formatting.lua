@@ -13,8 +13,8 @@ return {
   filter = function(client)
     -- Disables html builtin formatting on save for heex files as it conflicts with elixir formatter
     if client.name == "html" then return vim.bo.filetype ~= "heex" end
-    -- And enables elixir formatter
-    if client.name == "elixirls" then return true end
-    if client.name == "lua_ls" then return true end
+
+    -- And enables all other formatters
+    return true
   end,
 }
