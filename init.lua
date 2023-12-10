@@ -4,8 +4,8 @@ return {
   polish = function()
     require "user.autocmds"
 
-    -- change clipboard only if operational system is Windows
-    if jit.os == "Windows" then
+    -- change clipboard only if operational system is Windows or WSL
+    if jit.os == "Windows" or vim.fn.has "wsl" == 1 then
       vim.g.clipboard = {
         name = "WslClipboard",
         copy = {
