@@ -4,6 +4,8 @@ return {
   polish = function()
     require "user.autocmds"
 
+    vim.env.JAVA_OPTS = "-Xmx6g"
+
     -- change clipboard only if operational system is Windows or WSL
     if jit.os == "Windows" or vim.fn.has "wsl" == 1 then
       vim.g.clipboard = {
