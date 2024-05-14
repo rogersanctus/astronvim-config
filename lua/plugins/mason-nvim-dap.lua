@@ -12,11 +12,19 @@ return {
       handlers = {
         -- Setup C# DAP configuration handlers
         -- mason-nvim-dap uses handlers to setup DAP
+
+        function(config) mason_dap.default_setup(config) end,
+
         coreclr = function(config)
-          functional.each(
-            function(configuration) configuration.env = { ASPNETCORE_ENVIRONMENT = "Development" } end,
-            config.configurations
-          )
+          -- functional.each(
+          --   function(configuration) configuration.env = { ASPNETCORE_ENVIRONMENT = "Development" } end,
+          --   config.configurations
+          -- )
+          config.adapters = {
+            type = "executable",
+            command = vim.fn.exepath "netcoredbg",
+            args = { "--interpreter=vscode" },
+          }
 
           mason_dap.default_setup(config)
         end,

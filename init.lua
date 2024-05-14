@@ -1,48 +1,19 @@
-return {
-  colorscheme = "nightfox",
+-- This file simply bootstraps the installation of Lazy.nvim and then calls other files for execution
+-- This file doesn't necessarily need to be touched, BE CAUTIOUS editing this file and proceed at your own risk.
+local lazypath = vim.env.LAZY or vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+if not (vim.env.LAZY or (vim.uv or vim.loop).fs_stat(lazypath)) then
+  -- stylua: ignore
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
+end
+vim.opt.rtp:prepend(lazypath)
 
-  polish = function()
-    require "user.autocmds"
+-- validate that lazy is available
+if not pcall(require, "lazy") then
+  -- stylua: ignore
+  vim.api.nvim_echo({ { ("Unable to load lazy from: %s\n"):format(lazypath), "ErrorMsg" }, { "Press any key to exit...", "MoreMsg" } }, true, {})
+  vim.fn.getchar()
+  vim.cmd.quit()
+end
 
-    vim.env.JAVA_OPTS = "-Xmx6g"
-
-    -- change clipboard only if operational system is Windows or WSL
-    if jit.os == "Windows" or vim.fn.has "wsl" == 1 then
-      vim.g.clipboard = {
-        name = "WslClipboard",
-        copy = {
-          ["+"] = "clip.exe",
-          ["*"] = "clip.exe",
-        },
-        paste = {
-          ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-          ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-        },
-        cache_enabled = 0,
-      }
-    end
-
-    if jit.os == "Windows" then
-      vim.cmd [[
-        let &shell = executable("pwsh") ? 'pwsh' : 'powershell'
-		    let &shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[''Out-File:Encoding'']=''utf8'';'
-	      let &shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
-        let &shellpipe  = '2>&1 | %%{ "$_" } | Tee-Object %s; exit $LastExitCode'
-		    set shellquote= shellxquote=
-      ]]
-    end
-
-    vim.keymap.set("i", "<M-S>", function() return vim.fn["codeium#Complete"]() end, { expr = true })
-    vim.keymap.set(
-      "n",
-      "gd",
-      "<cmd>normal! gd<CR>",
-      { noremap = true, silent = true, desc = "Go to local declaration" }
-    )
-
-    if vim.fn.executable "rg" == 1 then
-      vim.opt.grepprg = "rg --vimgrep --smart-case --hidden"
-      vim.opt.grepformat = "%f:%l:%c:%m"
-    end
-  end,
-}
+require "lazy_setup"
+require "polish"

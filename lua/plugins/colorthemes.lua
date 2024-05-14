@@ -87,6 +87,7 @@ return {
   {
     "EdenEast/nightfox.nvim",
     lazy = false,
+    priority = 1000,
     config = function()
       require("nightfox").setup {
         options = {
@@ -117,11 +118,13 @@ return {
       }
     end,
   },
-
-  {
-    "yorik1984/newpaper.nvim",
-    lazy = false,
-    priority = 1000,
-    config = true,
-  },
+  -- {
+  --   "yorik1984/newpaper.nvim",
+  --   lazy = false,
+  --   config = function()
+  --     require("newpaper").setup {
+  --       -- ...
+  --     }
+  --   end,
+  -- },
 }

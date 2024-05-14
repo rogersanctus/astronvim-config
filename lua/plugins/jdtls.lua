@@ -1,5 +1,3 @@
-local utils = require "astronvim.utils"
-
 --[[
   Configures nvim-jdtls for Java development with jdtls as language-server,
   microsoft/java-debug-adapter for DAP and vs-code java-test for testing support on DAP.
@@ -7,7 +5,6 @@ local utils = require "astronvim.utils"
 return {
   "mfussenegger/nvim-jdtls",
   ft = { "java" },
-  init = function() astronvim.lsp.skip_setup = utils.list_insert_unique(astronvim.lsp.skip_setup, "jdtls") end,
   dependencies = { "williamboman/mason-lspconfig.nvim" },
   opts = function(_, opts)
     -- use this function notation to build some variables
@@ -29,9 +26,7 @@ return {
     end
 
     -- ensure that OS is valid
-    if not os or os == "" then
-      require("astronvim.utils").notify("jdtls: Could not detect valid OS", vim.log.levels.ERROR)
-    end
+    if not os or os == "" then require("astrocore").notify("jdtls: Could not detect valid OS", vim.log.levels.ERROR) end
 
     local bundles = {
       vim.fn.glob("$MASON/share/java-debug-adapter/com.microsoft.java.debug.plugin-*.jar", true),
@@ -110,11 +105,12 @@ return {
         ["$/progress"] = function()
           -- disable progress updates.
         end,
+        ["jdtls"] = false,
       },
       filetypes = { "java" },
       on_attach = function(client, bufnr)
         require("jdtls").setup_dap { hotcodereplace = "auto" }
-        require("astronvim.utils.lsp").on_attach(client, bufnr)
+        require("astrolsp").on_attach(client, bufnr)
       end,
     }
 
@@ -139,10 +135,7 @@ return {
           require("jdtls").start_or_attach(opts)
           -- require("jdtls.dap").setup_dap_main_class_configs()
         else
-          require("astronvim.utils").notify(
-            "jdtls: root_dir not found. Please specify a root marker",
-            vim.log.levels.ERROR
-          )
+          require("astrocore").notify("jdtls: root_dir not found. Please specify a root marker", vim.log.levels.ERROR)
         end
       end,
     })

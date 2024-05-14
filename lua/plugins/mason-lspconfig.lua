@@ -9,6 +9,7 @@ return {
     },
     ensure_installed = {
       "clangd",
+      "csharp_ls",
       "cssls",
       "eslint",
       "html",
