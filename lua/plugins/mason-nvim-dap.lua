@@ -16,15 +16,29 @@ return {
         function(config) mason_dap.default_setup(config) end,
 
         coreclr = function(config)
-          -- functional.each(
-          --   function(configuration) configuration.env = { ASPNETCORE_ENVIRONMENT = "Development" } end,
-          --   config.configurations
-          -- )
+          functional.each(function(configuration)
+            configuration.env = { ASPNETCORE_ENVIRONMENT = "Development" }
+            configuration.cwd = function() return vim.fn.input("Workspace folder", vim.fn.getcwd() .. "/", "file") end
+          end, config.configurations)
+
           config.adapters = {
             type = "executable",
             command = vim.fn.exepath "netcoredbg",
             args = { "--interpreter=vscode" },
           }
+
+          -- config.configurations = {
+          --   {
+          --     justMyCode = false,
+          --     stopAtEntry = false,
+          --     type = "coreclr",
+          --     name = "launch - netcoredbg",
+          --     request = "launch",
+          --     --[[ ,  ]]
+          --     program = function() return vim.fn.input("Path to dll", vim.fn.getcwd() .. "/bin/Debug/net8.0/", "file") end,
+          --     cwd = function() return vim.fn.input("Workspace folder", vim.fn.getcwd() .. "/", "file") end,
+          --   },
+          -- }
 
           mason_dap.default_setup(config)
         end,
