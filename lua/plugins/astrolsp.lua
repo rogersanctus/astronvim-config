@@ -76,7 +76,7 @@ return {
               enable = false,
             },
             runtime = {
-              version = "Lua 5.4",
+              version = "Lua 5.3",
             },
             hint = { enable = true },
           },
