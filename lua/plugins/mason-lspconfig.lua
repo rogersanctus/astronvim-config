@@ -21,7 +21,7 @@ return {
       "lua_ls",
       "yamlls",
       "elixirls",
-      "unocss",
+      -- "unocss",
       -- "kotlin_language_server",
       "tailwindcss",
       "emmet_language_server",
