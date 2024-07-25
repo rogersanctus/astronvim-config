@@ -5,18 +5,6 @@ return {
   config = function(_, _opts)
     local nvim_notify = require "notify"
 
-    local which_key = require "which-key"
-
-    which_key.register({
-      name = "Notifications",
-      q = {
-        function() nvim_notify.dismiss { pending = true, silent = true } end,
-        "Clear Notifications",
-        noremap = true,
-        nowait = true,
-      },
-    }, { prefix = "<M-n>" })
-
     local function my_notify(message, level, notifyOpts)
       local kotlin_ls_annoying_error = "kotlin_language_server: -32603"
 
