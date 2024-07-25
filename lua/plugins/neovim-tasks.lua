@@ -4,69 +4,43 @@ return {
   lazy = false,
   config = function(_, opts)
     local tasks_config = require "tasks.config"
-    local cmake_module = require "tasks.module.cmake"
+    local tasks_cmake = require "tasks.module.cmake"
     local cmake_util = require "utils.cmake"
+    local cmake_kits = require "utils.cmake.kits"
     local nvim_tasks = require "tasks"
     local which_key = require "which-key"
 
-    local cmake_module_configure = cmake_module.tasks.configure
-    local cmake_args = tasks_config.defaults.default_params.cmake.args
+    local cmake_args = vim.tbl_get(tasks_config, "defaults", "default_params", "cmake", "args") or {}
     local cmake_args_configure_default = cmake_args.configure
+
+    tasks_cmake.params = vim.tbl_deep_extend("force", tasks_cmake.params, {
+      kit = function() return cmake_kits.get(vim.fn.getcwd()) end,
+    })
 
     nvim_tasks.setup {
       default_params = {
         cmake = {
           args = cmake_args,
+          kit = nil,
         },
       },
     }
 
-    which_key.register({
-      c = {
-        name = "CMake Tasks",
-        s = {
-          function() cmake_util.select_kit(cmake_args, cmake_args_configure_default) end,
-          "CMake Select Kit",
-          noremap = true,
-          silent = true,
-        },
-        g = {
-          "<cmd>Task start cmake configure<cr>",
-          "CMake Generate (configure)",
-          noremap = true,
-          silent = true,
-        },
-        b = {
-          "<cmd>Task start cmake build<cr>",
-          "CMake Build",
-          noremap = true,
-          silent = true,
-        },
-        c = {
-          "<cmd>Task start cmake clean<cr>",
-          "CMake Clean",
-          noremap = true,
-          silent = true,
-        },
-        r = {
-          "<cmd>Task start cmake run<cr>",
-          "CMake Run",
-          noremap = true,
-          silent = true,
-        },
-        d = {
-          "<cmd>Task start cmake debug<cr>",
-          "CMake Debug",
-          noremap = true,
-          silent = true,
-        },
-        t = {
-          "<cmd>Task set_module_param cmake target<cr>",
-          "CMake Select Target",
-          noremap = true,
-          silent = true,
-        },
+    which_key.add {
+      { "<M-t>", group = "Tasks" },
+      { "<M-t>c", group = "CMake Tasks" },
+      { "<M-t>cb", "<cmd>Task start cmake build<cr>", desc = "CMake Build", remap = false },
+      { "<M-t>cc", "<cmd>Task start cmake clean<cr>", desc = "CMake Clean", remap = false },
+      { "<M-t>cd", "<cmd>Task start cmake debug<cr>", desc = "CMake Debug", remap = false },
+      { "<M-t>cg", "<cmd>Task start cmake configure<cr>", desc = "CMake Generate (configure)", remap = false },
+      { "<M-t>cr", "<cmd>Task start cmake run<cr>", desc = "CMake Run", remap = false },
+      {
+        "<M-t>cs",
+        function() cmake_util.select_kit(cmake_args, cmake_args_configure_default) end,
+        desc = "CMake Select Kit",
+        remap = false,
       },
-    }, { prefix = "<M-t>", name = "Tasks" })
+      { "<M-t>ct", "<cmd>Task set_module_param cmake target<cr>", desc = "CMake Select Target", remap = false },
+    }
   end,
 }
