@@ -34,6 +34,8 @@ end
 
 -- returns a list of descriptions of all kits
 function kits.get(cwd)
+  vim.notify("Getting CMake Kits from " .. cwd, vim.log.levels.INFO)
+
   -- start parsing
   local config = kits.parse(cwd)
   local res = {}
