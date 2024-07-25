@@ -13,6 +13,7 @@ return {
       "cssls",
       "eslint",
       "html",
+      "haxe_language_server",
       "marksman",
       "jdtls",
       "jsonls",
@@ -25,6 +26,7 @@ return {
       -- "kotlin_language_server",
       "tailwindcss",
       "emmet_language_server",
+      "zls",
     },
   },
 }

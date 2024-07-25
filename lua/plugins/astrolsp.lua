@@ -64,6 +64,10 @@ return {
       emmet_language_server = {
         filetypes = { "css", "html", "javascriptreact", "typescriptreact", "eelixir", "heex" },
       },
+      haxe_language_server = {
+        root_dir = lspconfig.util.root_pattern "*.hxml",
+        filetypes = { "haxe" },
+      },
       groovyls = {},
       html = { filetypes = { "html", "javascriptreact", "typescriptreact", "eelixir", "heex" } },
       kotlin_language_server = {
