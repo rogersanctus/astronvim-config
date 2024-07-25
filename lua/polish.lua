@@ -29,15 +29,9 @@ if jit.os == "Windows" then
 end
 
 vim.keymap.set("i", "<M-S>", function() return vim.fn["codeium#Complete"]() end, { expr = true })
-vim.keymap.set(
-  "n",
-  "gd",
-  "<cmd>normal! gd<CR>",
-  { noremap = true, silent = true, desc = "Go to local declaration" }
-)
+vim.keymap.set("n", "gd", "<cmd>normal! gd<CR>", { noremap = true, silent = true, desc = "Go to local declaration" })
 
 if vim.fn.executable "rg" == 1 then
   vim.opt.grepprg = "rg --vimgrep --smart-case --hidden"
   vim.opt.grepformat = "%f:%l:%c:%m"
 end
-
