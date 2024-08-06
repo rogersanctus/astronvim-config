@@ -52,6 +52,7 @@ local function get_jdks()
 
     table.insert(jdk_versions, {
       name = "JavaSE-" .. greatest.major,
+      versionMajor = greatest.major,
       versionName = greatest.full_version,
     })
   end
@@ -68,21 +69,7 @@ return {
     if vim.fn.has "unix" then
       local jdks = get_jdks()
 
-      -- local jdks = {
-      --   {
-      --     name = "JavaSE-17",
-      --     versionName = "openjdk-17",
-      --   },
-      --   {
-      --     name = "JavaSE-20",
-      --     versionName = "openjdk-20",
-      --   },
-      --   {
-      --     name = "JavaSE-22",
-      --     versionName = "openjdk-22",
-      --   },
-      -- }
-
+      -- Builds the runtimes list for jdtls
       for k, v in pairs(jdks) do
         -- Uses https://mise.jdx.dev to find the path to the JDKs. They must have been installed with mise.
         local path = vim.fn.system("mise where java@" .. v.versionName)
@@ -92,8 +79,8 @@ return {
           path = path:gsub("%s+$", "") .. "/",
         }
 
-        -- Take the first JDK path as the JdtLs runtime jdk - minimum version is Java 17
-        if k == 1 then java_cmd = runtime.path .. "bin/java" end
+        -- Take the JDK path as the JdtLs runtime jdk - minimum version is Java 17
+        if v.versionMajor == "17" then java_cmd = runtime.path .. "bin/java" end
 
         table.insert(runtimes, runtime)
       end
