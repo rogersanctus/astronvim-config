@@ -80,7 +80,7 @@ return {
               enable = false,
             },
             runtime = {
-              version = "Lua 5.3",
+              version = "Lua 5.4",
             },
             hint = { enable = true },
           },
