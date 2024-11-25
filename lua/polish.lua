@@ -2,8 +2,27 @@ require "autocmds"
 
 vim.env.JAVA_OPTS = "-Xmx6g"
 
--- change clipboard only if operational system is Windows or WSL
-if jit.os == "Windows" or vim.fn.has "wsl" == 1 then
+local function check_running_on_ssh()
+  local exec_tree = vim.fn.system('pstree -ps $$')
+  local sub = string.find(exec_tree, 'sshd%-session.*%-%-%-nvim.*$')
+
+  return sub ~= nil
+end
+
+if jit.os == 'Linux' and check_running_on_ssh() then
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+    },
+    paste = {
+      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+    },
+  }
+  -- change clipboard only if operational system is Windows or WSL
+elseif jit.os == "Windows" or vim.fn.has "wsl" == 1 then
   vim.g.clipboard = {
     name = "WslClipboard",
     copy = {
