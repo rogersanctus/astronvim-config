@@ -8,10 +8,10 @@ vim.api.nvim_create_autocmd("User", {
   group = "lsp",
   callback = function()
     vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
+      buffer = vim.api.nvim_get_current_buf(),
       --command = "EslintFixAll",
       callback = function()
-        local clients = vim.lsp.get_active_clients()
+        local clients = vim.lsp.get_clients()
 
         -- check if 'eslint' in active
         for _, client in ipairs(clients) do
