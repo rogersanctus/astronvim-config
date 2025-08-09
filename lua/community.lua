@@ -7,8 +7,11 @@ return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.typescript" },
   { import = "astrocommunity.pack.angular" },
-  { import = "astrocommunity.pack.cs" },
+  { import = "astrocommunity.pack.cs-omnisharp" },
   { import = "astrocommunity.pack.java" },
+  { import = "astrocommunity.pack.php" },
+  { import = "astrocommunity.pack.blade" },
+  { import = "astrocommunity.pack.vue" },
   -- { import = "astrocommunity.pack.haxe" },
   -- { import = "astrocommunity.pack.lua" },
   -- import/override with your plugins folder
