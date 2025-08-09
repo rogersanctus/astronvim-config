@@ -16,7 +16,7 @@ return {
     features = {
       autoformat = true, -- enable or disable auto formatting on start
       codelens = true, -- enable/disable codelens refresh on start
-      inlay_hints = true, -- enable/disable inlay hints on start
+      inlay_hints = false, -- enable/disable inlay hints on start
       semantic_tokens = true, -- enable/disable semantic token highlighting
     },
     -- customize lsp formatting options
@@ -39,6 +39,7 @@ return {
       disabled = { -- disable formatting capabilities for the listed language servers
         -- disable lua_ls formatting capability if you want to use StyLua to format your lua code
         -- "lua_ls",
+        "volar",
       },
       filter = function(client)
         -- Disables html builtin formatting on save for heex files as it conflicts with elixir formatter
@@ -70,6 +71,9 @@ return {
       },
       groovyls = {},
       html = { filetypes = { "html", "javascriptreact", "typescriptreact", "eelixir", "heex" } },
+      phpactor = {
+        filetypes = { "phpactor", "blade-actor" },
+      },
       kotlin_language_server = {
         cmd = { kls_path },
       },
@@ -86,26 +90,6 @@ return {
           },
         },
       },
-      tsserver = {
-        javascript = {
-          includeInlayEnumMemberValueHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayVariableTypeHints = true,
-        },
-        typescript = {
-          includeInlayEnumMemberValueHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
-          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayVariableTypeHints = true,
-        },
-      },
       tailwindcss = {
         root_dir = lspconfig.util.root_pattern(
           "tailwind.config.js",
@@ -117,7 +101,7 @@ return {
           ".git",
           "mix.exs"
         ),
-        filetypes = { "html", "javascriptreact", "typescriptreact", "eelixir", "heex", "astro" },
+        filetypes = { "html", "javascriptreact", "typescriptreact", "eelixir", "heex", "astro", "vue", "scss", "css" },
         init_options = {
           userLanguages = {
             heex = "html-eex",
@@ -144,6 +128,132 @@ return {
       -- pyright = function(_, opts) require("lspconfig").pyright.setup(opts) end -- or a custom handler function can be passed
       jdtls = false,
       -- gdscript = function(_, opts) require("lspconfig").gdscript.setup(opts) end,
+
+      phpactor = function(_, opts)
+        local phpactor_cmd_path = vim.fn.expand "$MASON/bin/phpactor"
+
+        opts = vim.tbl_deep_extend("force", opts, {
+          cmd = { phpactor_cmd_path, "language-server", "-vvv" },
+          filetypes = { "php", "blade" },
+        })
+
+        lspconfig.phpactor.setup(opts)
+      end,
+
+      -- Typescript Language Server via (https://github.com/yioneko/vtsls)
+      -- vtsls = function(_, opts)
+      --   local has_mason_registry, mason_registry = pcall(require, "mason-registry")
+      --
+      --   if not has_mason_registry then
+      --     lspconfig.vtsls.setup(opts)
+      --     return
+      --   end
+      --
+      --   local vls = mason_registry.get_package "vue-language-server"
+      --
+      --   if not vls:is_installed() then
+      --     lspconfig.vtsls.setup(opts)
+      --     return
+      --   end
+      --
+      --   local vls_path = vls:get_install_path()
+      --     .. "/node_modules/@vue/language-server"
+      --     .. "/node_modules/@vue/typescript-plugin"
+      --
+      --   opts = vim.tbl_deep_extend("force", opts, {
+      --     -- init_options = {
+      --     --   plugins = {
+      --     --     {
+      --     --       name = "@vue/typescript-plugin",
+      --     --       location = vls_path,
+      --     --       languages = { "typescript", "javascript", "vue" },
+      --     --     },
+      --     --   },
+      --     -- },
+      --     settings = {
+      --       vtsls = {
+      --         tsserver = {
+      --           globalPlugins = {
+      --             {
+      --               name = "@vue/typescript-plugin",
+      --               location = vls_path,
+      --               languages = { "typescript", "javascript", "vue" },
+      --             },
+      --           },
+      --         },
+      --       },
+      --     },
+      --     -- filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+      --   })
+      --
+      --   lspconfig.vtsls.setup(opts)
+      -- end,
+
+      volar = function(_, opts)
+        local original_on_attach = opts.on_attach
+
+        opts = vim.tbl_deep_extend("force", opts, {
+          init_options = {
+            vue = {
+              hybridMode = false,
+            },
+          },
+          on_attach = function(client, bufn)
+            client.handlers["tsserver/request"] = function(_, result, context)
+              local clients = vim.lsp.get_clients { bufnr = context.bufnr, name = "vtsls" }
+              if #clients == 0 then
+                vim.notify(
+                  "Could not found `vtsls` lsp client, vue_lsp would not work without it.",
+                  vim.log.levels.ERROR
+                )
+                return
+              end
+              local ts_client = clients[1]
+
+              local param = unpack(result)
+              local id, command, payload = unpack(param)
+              ts_client:exec_cmd({
+                title = "vue_request_forward", -- You can give title anything as it's used to represent a command in the UI, `:h Client:exec_cmd`
+                command = "typescript.tsserverRequest",
+                arguments = {
+                  command,
+                  payload,
+                },
+              }, { bufnr = context.bufnr }, function(_, cmd_handler_result)
+                -- May be result is nil, so check it before trying to get its body
+                local response = cmd_handler_result and cmd_handler_result.body
+                local response_data = { { id, response } }
+                client:notify("tsserver/response", response_data)
+              end)
+            end
+
+            original_on_attach(client, bufn)
+
+            -- Disable formatting through 'Vue Language Server'
+            client.server_capabilities.documentFormattingProvider = false
+          end,
+        })
+
+        lspconfig.volar.setup(opts)
+      end,
+
+      -- cssls
+      cssls = function(_, opts)
+        lspconfig.cssls.setup(vim.tbl_deep_extend("force", opts, {
+          settings = {
+            css = {
+              lint = {
+                unknownAtRules = "ignore",
+              },
+            },
+            scss = {
+              lint = {
+                unknownAtRules = "ignore",
+              },
+            },
+          },
+        }))
+      end,
     },
     -- Configure buffer local auto commands to add when attaching a language server
     autocmds = {
