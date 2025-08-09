@@ -4,12 +4,11 @@ return {
   opts = {
     automatic_installation = {
       exclude = {
-        "unocss",
+        "vtsls",
       },
     },
     ensure_installed = {
       "clangd",
-      "csharp_ls",
       "cssls",
       "eslint",
       "html",
@@ -22,8 +21,6 @@ return {
       "lua_ls",
       "yamlls",
       "elixirls",
-      -- "unocss",
-      -- "kotlin_language_server",
       "tailwindcss",
       "emmet_language_server",
       "zls",
