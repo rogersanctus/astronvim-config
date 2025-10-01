@@ -57,6 +57,7 @@ return {
     servers = {
       -- "gdscript",
       "kotlin_language_server",
+      "avalonials",
     },
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
@@ -77,6 +78,11 @@ return {
       kotlin_language_server = {
         cmd = { kls_path },
       },
+      avalonials = {
+        filetypes = { "axaml", "xml" },
+        cmd = { "avalonia-ls" },
+        root_dir = lspconfig.util.root_pattern "*.csproj",
+      },
       lua_ls = {
         settings = {
           Lua = {
@@ -89,6 +95,9 @@ return {
             hint = { enable = true },
           },
         },
+      },
+      omnisharp = {
+        cmd = { "OmniSharp" },
       },
       tailwindcss = {
         root_dir = lspconfig.util.root_pattern(
