@@ -2,6 +2,7 @@ vim.filetype.add {
   extension = {
     hx = "haxe",
     hxml = "hxml",
+    axaml = "xml",
   },
   pattern = {
     [".*%.blade%.php"] = "blade",
