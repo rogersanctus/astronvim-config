@@ -12,6 +12,7 @@ return {
   { import = "astrocommunity.pack.php" },
   { import = "astrocommunity.pack.blade" },
   { import = "astrocommunity.pack.vue" },
+  { import = "astrocommunity.pack.cmake" },
   -- { import = "astrocommunity.pack.haxe" },
   -- { import = "astrocommunity.pack.lua" },
   -- import/override with your plugins folder
