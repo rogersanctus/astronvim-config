@@ -7,7 +7,7 @@ return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.typescript" },
   { import = "astrocommunity.pack.angular" },
-  { import = "astrocommunity.pack.cs-omnisharp" },
+  { import = "astrocommunity.pack.cs" },
   { import = "astrocommunity.pack.java" },
   { import = "astrocommunity.pack.php" },
   { import = "astrocommunity.pack.blade" },

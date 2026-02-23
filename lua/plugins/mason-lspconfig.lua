@@ -27,6 +27,7 @@ return {
       "tailwindcss",
       "emmet_language_server",
       "zls",
+      "csharp_ls",
     }
 
     if arch == "aarch64" then
